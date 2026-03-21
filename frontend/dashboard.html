@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ganesh Seeds - Dashboard</title>
+<style>
+body { margin:0; font-family:'Segoe UI',sans-serif; height:100vh; display:flex; justify-content:center; align-items:center; background:linear-gradient(135deg, #A8E063, #56AB2F);}
+.container { text-align:center;}
+h1 { font-size:48px; color:#2E7D32; margin-bottom:40px; }
+.ceo-image { width:200px; height:200px; border-radius:50%; object-fit:cover; border:4px solid #2E7D32; box-shadow:0 5px 20px rgba(0,0,0,0.3);}
+button { margin:20px; padding:15px 30px; font-size:18px; border-radius:10px; border:none; cursor:pointer; background:#2E7D32; color:#fff; transition:0.3s;}
+button:hover { background:#1B5E20; transform:scale(1.05);}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Ganesh Seeds</h1>
+  <img src="father.jpg" alt="CEO" class="ceo-image">
+  <div>
+    <button onclick="window.location.href='login.html?role=admin'">Admin</button>
+    <button onclick="window.location.href='login.html?role=manager'">Manager</button>
+    <button onclick="window.location.href='login.html?role=field_assistant'">Field Assistant</button>
+    <button onclick="window.location.href='login.html?role=farmer'">Farmer</button>
+  </div>
+</div>
+</body>
+</html>

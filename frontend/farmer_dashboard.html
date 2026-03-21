@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Farmer Dashboard</title>
+<style>
+body { margin:0; font-family:'Segoe UI',sans-serif; background:#C8E6C9; padding:20px;}
+h1 { color:#2E7D32; text-align:center;}
+ul { list-style:none; padding:0; }
+li { background:#fff; margin:10px 0; padding:10px; border-radius:10px; box-shadow:0 3px 8px rgba(0,0,0,0.2);}
+img { max-width:100%; border-radius:8px; margin-top:5px; }
+</style>
+</head>
+<body>
+<h1>Farmer Dashboard</h1>
+<h2>Your Reports</h2>
+<ul id="reportsList"></ul>
+
+<script>
+const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+const ul = document.getElementById('reportsList');
+const users = JSON.parse(localStorage.getItem('users')) || [];
+
+users.forEach(u=>{
+  if(u.username===currentUser.username){
+    u.reports.forEach(r=>{
+      const li = document.createElement('li');
+      li.innerHTML = `<strong>Date:</strong> ${r.date} | <strong>Village:</strong> ${r.village}<br><strong>Details:</strong> ${r.details}<br><img src="${r.photo}" alt="Field Photo">`;
+      ul.appendChild(li);
+    });
+  }
+});
+</script>
+</body>
+</html>

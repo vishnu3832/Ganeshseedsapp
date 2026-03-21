@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field Assistant Dashboard</title>
+<style>
+body { margin:0; font-family:'Segoe UI',sans-serif; background:#C8E6C9; padding:20px;}
+h1 { color:#2E7D32; text-align:center;}
+input, button { display:block; margin:10px 0; padding:10px; width:300px; }
+button { border:none; border-radius:8px; background:#2E7D32; color:#fff; cursor:pointer;}
+button:hover { background:#1B5E20; }
+</style>
+</head>
+<body>
+<h1>Field Assistant Dashboard</h1>
+<h2>Submit Field Report</h2>
+<input type="text" placeholder="Village" id="reportVillage">
+<input type="text" placeholder="Details" id="reportDetails">
+<input type="file" id="reportPhoto" accept="image/*">
+<button onclick="submitReport()">Submit Report</button>
+
+<script>
+const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+let users = JSON.parse(localStorage.getItem('users')) || [];
+
+function submitReport(){
+  const village = document.getElementById('reportVillage').value.trim();
+  const details = document.getElementById('reportDetails').value.trim();
+  const file = document.getElementById('reportPhoto').files[0];
+
+  if(!village || !details || !file){ alert("Fill all fields!"); return; }
+
+  const reader = new FileReader();
+  reader.onload = function(e){
+    const report = { village, details, photo:e.target.result, date:new Date().toLocaleDateString(), submittedBy:currentUser.username };
+    const idx = users.findIndex(u=>u.username===currentUser.username);
+    if(idx>=0) users[idx].reports.push(report);
+    localStorage.setItem('users', JSON.stringify(users));
+    alert("Report submitted!");
+    location.reload();
+  }
+  reader.readAsDataURL(file);
+}
+</script>
+</body>
+</html>
