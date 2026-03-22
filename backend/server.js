@@ -71,3 +71,6 @@ app.get('/api/user', (req, res) => res.json(currentUser || {}));
 app.get('/api/reports', (req, res) => res.json(getDB().reports));
 
 app.listen(3000, () => console.log("🚀 Server: http://localhost:3000"));
+// Change this line at the bottom of server.js
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 System Live on Port ${PORT}`));
