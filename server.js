@@ -23,18 +23,25 @@ app.use('/uploads', express.static(UPLOADS));
 app.use(express.static(__dirname)); 
 
 let currentUser = null;
+
 const getDB = () => JSON.parse(fs.readFileSync(DB_FILE));
 const saveDB = (data) => fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 
+// LOGIN ROUTE - FIXED FOR RENDER
 app.post('/login', (req, res) => {
     const db = getDB();
-    const user = db.users.find(u => u.username === req.body.username && u.password === req.body.password);
+    const { username, password } = req.body;
+    
+    const user = db.users.find(u => u.username === username && u.password === password);
+    
     if (user) {
         currentUser = user;
-        const target = { manager: '/manager_dashboard.html', fieldassistant: '/field_assistant_dashboard.html' };
-        res.redirect(target[user.role] || '/index.html');
+        // Use relative paths so it works on any domain
+        if (user.role === 'manager') return res.redirect('/manager_dashboard.html');
+        if (user.role === 'fieldassistant') return res.redirect('/field_assistant_dashboard.html');
+        res.redirect('/index.html');
     } else {
-        res.send(`<script>alert("Login Failed"); window.location.href="/login.html";</script>`);
+        res.send(`<script>alert("Invalid Login for ${username}"); window.location.href="/login.html";</script>`);
     }
 });
 
@@ -48,10 +55,10 @@ app.post('/submit-report', upload.single('fieldPhoto'), (req, res) => {
         date: new Date().toLocaleString()
     });
     saveDB(db);
-    res.send(`<script>alert("Report Transmitted!"); window.location.href="/field_assistant_dashboard.html";</script>`);
+    res.redirect('/field_assistant_dashboard.html');
 });
 
 app.get('/api/user', (req, res) => res.json(currentUser || {}));
 app.get('/api/reports', (req, res) => res.json(getDB().reports));
 
-app.listen(PORT, () => console.log(`🚀 Server Live on Port ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Live on port ${PORT}`));
