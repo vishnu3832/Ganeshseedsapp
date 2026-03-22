@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "username": "charan",
+      "role": "fieldassistant",
+      "village": "kcp",
+      "password": "123456",
+      "photo": "/uploads/1774161637987-Gemini_Generated_Image_pfb92zpfb92zpfb9.png"
+    },
+    {
+      "username": "charan",
+      "role": "fieldassistant",
+      "village": "lbsdc",
+      "password": "123456",
+      "photo": "/uploads/1774161816838-Gemini_Generated_Image_pfb92zpfb92zpfb9.png"
+    },
+    {
+      "username": "Gangadhar",
+      "role": "manager",
+      "village": "hyd",
+      "password": "123456",
+      "photo": "/uploads/1774161864117-WhatsApp Image 2026-03-21 at 5.04.29 PM.jpeg"
+    }
+  ],
+  "reports": [
+    {
+      "farmer": "lksdc",
+      "village": "lgwye",
+      "text": "iuegqf",
+      "photo": "/uploads/1774162108442-Gemini_Generated_Image_pfb92zpfb92zpfb9.png",
+      "date": "22/3/2026, 12:18:28 pm"
+    }
+  ]
+}

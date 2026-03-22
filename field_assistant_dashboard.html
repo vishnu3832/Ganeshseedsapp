@@ -1,47 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Field Assistant Dashboard</title>
-<style>
-body { margin:0; font-family:'Segoe UI',sans-serif; background:#C8E6C9; padding:20px;}
-h1 { color:#2E7D32; text-align:center;}
-input, button { display:block; margin:10px 0; padding:10px; width:300px; }
-button { border:none; border-radius:8px; background:#2E7D32; color:#fff; cursor:pointer;}
-button:hover { background:#1B5E20; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Field Terminal | Ganesh Seeds</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
 </head>
-<body>
-<h1>Field Assistant Dashboard</h1>
-<h2>Submit Field Report</h2>
-<input type="text" placeholder="Village" id="reportVillage">
-<input type="text" placeholder="Details" id="reportDetails">
-<input type="file" id="reportPhoto" accept="image/*">
-<button onclick="submitReport()">Submit Report</button>
+<body class="bg-slate-50 font-['Plus_Jakarta_Sans'] pb-24">
+    <header class="bg-green-900 p-12 rounded-b-[4rem] shadow-2xl text-white relative overflow-hidden">
+        <div class="max-w-4xl mx-auto flex items-center justify-between relative z-10">
+            <div>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-green-400 mb-2">Live Reporting Terminal</p>
+                <h1 class="text-4xl font-black tracking-tighter leading-none text-white">Daily Field Log</h1>
+            </div>
+            <img id="staffAvatar" src="/father.jpg" class="w-16 h-16 rounded-[1.5rem] border-4 border-green-800/50 object-cover shadow-2xl">
+        </div>
+    </header>
 
-<script>
-const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
-let users = JSON.parse(localStorage.getItem('users')) || [];
+    <main class="max-w-4xl mx-auto px-6 -mt-12 relative z-20">
+        <form action="/submit-report" method="POST" enctype="multipart/form-data" class="bg-white p-10 md:p-14 rounded-[3.5rem] shadow-2xl space-y-10 border border-gray-100">
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Farmer Name</label>
+                    <input type="text" name="farmerName" placeholder="Ex: Rajesh Kumar" class="w-full p-5 rounded-2xl bg-gray-50 border-none font-bold text-gray-800 focus:ring-2 focus:ring-green-600 outline-none" required>
+                </div>
+                <div class="space-y-1">
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Village Location</label>
+                    <input type="text" name="village" placeholder="Ex: Rampur North" class="w-full p-5 rounded-2xl bg-gray-50 border-none font-bold text-gray-800 focus:ring-2 focus:ring-green-600 outline-none" required>
+                </div>
+            </div>
 
-function submitReport(){
-  const village = document.getElementById('reportVillage').value.trim();
-  const details = document.getElementById('reportDetails').value.trim();
-  const file = document.getElementById('reportPhoto').files[0];
+            <div class="space-y-1">
+                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Detailed Observations</label>
+                <textarea name="observations" rows="4" placeholder="How is the crop health?" class="w-full p-5 rounded-2xl bg-gray-50 border-none font-bold text-gray-800 focus:ring-2 focus:ring-green-600 outline-none resize-none" required></textarea>
+            </div>
 
-  if(!village || !details || !file){ alert("Fill all fields!"); return; }
+            <div class="bg-green-50 border-4 border-dashed border-green-100 rounded-[3rem] p-10 text-center relative group">
+                <div id="previewContainer" class="hidden mb-4">
+                    <img id="imagePreview" class="w-48 h-48 object-cover rounded-3xl mx-auto border-4 border-white shadow-lg">
+                </div>
+                <div id="uploadPrompt">
+                    <div class="text-5xl mb-4">📸</div>
+                    <label for="fieldPhoto" class="cursor-pointer bg-green-800 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl inline-block hover:bg-black transition">Capture Crop Photo</label>
+                </div>
+                <input type="file" name="fieldPhoto" id="fieldPhoto" accept="image/*" capture="camera" class="hidden" required onchange="previewImage(this)">
+                <p class="text-[10px] text-gray-400 mt-4 font-black uppercase tracking-widest">Required for submission to Mr. Gangadhar</p>
+            </div>
 
-  const reader = new FileReader();
-  reader.onload = function(e){
-    const report = { village, details, photo:e.target.result, date:new Date().toLocaleDateString(), submittedBy:currentUser.username };
-    const idx = users.findIndex(u=>u.username===currentUser.username);
-    if(idx>=0) users[idx].reports.push(report);
-    localStorage.setItem('users', JSON.stringify(users));
-    alert("Report submitted!");
-    location.reload();
-  }
-  reader.readAsDataURL(file);
-}
-</script>
+            <button type="submit" class="w-full bg-green-900 text-white py-8 rounded-[2.5rem] font-black text-2xl shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all">
+                TRANSMIT TO CEO
+            </button>
+        </form>
+    </main>
+
+    <script>
+        // Image Preview Script
+        function previewImage(input) {
+            const container = document.getElementById('previewContainer');
+            const preview = document.getElementById('imagePreview');
+            const prompt = document.getElementById('uploadPrompt');
+            
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    container.classList.remove('hidden');
+                    prompt.classList.add('opacity-50');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        // Fetch User Info
+        fetch('/api/user').then(r => r.json()).then(u => {
+            if(u.photo) document.getElementById('staffAvatar').src = u.photo;
+        });
+    </script>
 </body>
 </html>

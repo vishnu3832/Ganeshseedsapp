@@ -1,68 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manager Dashboard</title>
-<style>
-body { margin:0; font-family:'Segoe UI',sans-serif; background:#C8E6C9; padding:20px;}
-h1 { color:#2E7D32; text-align:center;}
-table { width:100%; border-collapse: collapse; margin-top:20px;}
-th, td { border:1px solid #2E7D32; padding:8px; text-align:center;}
-th { background:#2E7D32; color:#fff;}
-button { margin:10px; padding:10px; border:none; border-radius:8px; background:#2E7D32; color:#fff; cursor:pointer;}
-button:hover { background:#1B5E20; }
-</style>
+    <meta charset="UTF-8"><title>CEO Command Center | Nampally Gangadhar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background: #020617; color: #f8fafc; font-family: sans-serif; }
+        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); }
+        .ceo-gradient { background: linear-gradient(to right, #4ade80, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    </style>
 </head>
-<body>
-<h1>Manager Dashboard</h1>
-<button onclick="window.location.href='create_user.html'">Create User</button>
-<h2>Staff in Your Villages</h2>
-<table>
-<thead><tr><th>Username</th><th>Role</th><th>Villages</th><th>Reports</th></tr></thead>
-<tbody id="staffList"></tbody>
-</table>
+<body class="flex min-h-screen">
+    <div id="welcomeOverlay" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 hidden">
+        <div class="max-w-2xl bg-slate-900 border border-green-500/30 p-12 rounded-[4rem] text-center shadow-[0_0_80px_rgba(34,197,94,0.15)]">
+            <div class="w-24 h-24 bg-green-500 rounded-[2rem] flex items-center justify-center text-5xl mx-auto mb-8 shadow-xl">🌱</div>
+            <h2 class="text-4xl font-black mb-6 tracking-tighter">Welcome, <span class="ceo-gradient">Mr. Nampally Gangadhar</span></h2>
+            <p class="text-slate-400 text-lg mb-10 leading-relaxed font-medium">Your digital agriculture network is online. This portal connects you directly to field reports, crop health, and farmer data across all villages.</p>
+            <button onclick="closeBriefing()" class="bg-green-500 text-black px-12 py-5 rounded-2xl font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-white transition-all">Access Dashboard</button>
+        </div>
+    </div>
 
-<h2>Submit Field Report</h2>
-<input type="text" placeholder="Village" id="reportVillage">
-<input type="text" placeholder="Details" id="reportDetails">
-<input type="file" id="reportPhoto" accept="image/*">
-<button onclick="submitReport()">Submit Report</button>
+    <aside class="w-80 bg-slate-950 p-8 border-r border-white/5 hidden lg:block sticky top-0 h-screen">
+        <h1 class="text-2xl font-black text-green-500 mb-16 italic tracking-tighter">GANESH SEEDS</h1>
+        
+        <div class="glass p-6 rounded-[2.5rem] border border-white/5 flex flex-col items-center text-center">
+            <img id="ceoAvatar" src="/father.jpg" class="w-24 h-24 rounded-[2rem] object-cover border-4 border-green-500/30 shadow-2xl mb-4">
+            <p class="font-black text-lg text-white leading-tight">Nampally Gangadhar</p>
+            <p class="text-[10px] text-green-500 font-bold uppercase tracking-[0.3em] mt-2">Founder & CEO</p>
+        </div>
 
-<script>
-const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
-let users = JSON.parse(localStorage.getItem('users')) || [];
-const tbody = document.getElementById('staffList');
+        <nav class="mt-12 space-y-4">
+            <a href="#" class="block p-4 bg-white/5 rounded-2xl font-bold text-green-400 border border-white/5 text-sm">📍 Live Field Reports</a>
+            <a href="#" class="block p-4 text-slate-500 font-bold text-sm hover:text-white transition">📦 Inventory Status</a>
+            <a href="#" class="block p-4 text-slate-500 font-bold text-sm hover:text-white transition">👥 Staff Management</a>
+        </nav>
+    </aside>
 
-// display staff in manager's villages
-users.forEach(u=>{
-  if(u.villages.some(v=>currentUser.villages.includes(v))){
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${u.username}</td><td>${u.role}</td><td>${u.villages.join(', ')}</td><td>${u.reports.length}</td>`;
-    tbody.appendChild(tr);
-  }
-});
+    <main class="flex-1 p-12 overflow-y-auto">
+        <div class="flex justify-between items-end mb-16">
+            <div>
+                <p class="text-green-500 font-black text-[10px] uppercase tracking-[0.4em] mb-2">Morning Update</p>
+                <h2 class="text-5xl font-black tracking-tighter">Field <span class="ceo-gradient">Intelligence</span></h2>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="window.print()" class="bg-slate-900 border border-white/10 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition">Print PDF Reports</button>
+                <button onclick="location.href='/login.html'" class="bg-red-500/10 text-red-500 border border-red-500/20 px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition">Logout</button>
+            </div>
+        </div>
 
-// submit report
-function submitReport(){
-  const village = document.getElementById('reportVillage').value.trim();
-  const details = document.getElementById('reportDetails').value.trim();
-  const file = document.getElementById('reportPhoto').files[0];
+        <div id="reportsContainer" class="grid grid-cols-1 xl:grid-cols-2 gap-10">
+            </div>
+    </main>
 
-  if(!village || !details || !file){ alert("Fill all fields!"); return; }
+    <script>
+        function closeBriefing() { 
+            document.getElementById('welcomeOverlay').classList.add('hidden');
+            localStorage.setItem('briefed_gangadhar', 'true');
+        }
 
-  const reader = new FileReader();
-  reader.onload = function(e){
-    const report = { village, details, photo:e.target.result, date:new Date().toLocaleDateString(), submittedBy:currentUser.username };
-    // add to current user
-    const idx = users.findIndex(u=>u.username===currentUser.username);
-    if(idx>=0) users[idx].reports.push(report);
-    localStorage.setItem('users', JSON.stringify(users));
-    alert("Report submitted!");
-    location.reload();
-  }
-  reader.readAsDataURL(file);
-}
-</script>
+        if(!localStorage.getItem('briefed_gangadhar')) {
+            document.getElementById('welcomeOverlay').classList.remove('hidden');
+        }
+
+        // We override the fetch if it returns nothing to keep Gangadhar's name visible
+        fetch('/api/user').then(r => r.json()).then(u => {
+            if(u.photo) document.getElementById('ceoAvatar').src = u.photo;
+        });
+
+        function loadReports() {
+            fetch('/api/reports').then(r => r.json()).then(data => {
+                const container = document.getElementById('reportsContainer');
+                if(data.length === 0) {
+                    container.innerHTML = `<div class="col-span-full glass p-24 rounded-[4rem] text-center text-slate-600 font-black uppercase tracking-widest italic border-2 border-dashed border-white/5">Waiting for live village data...</div>`;
+                    return;
+                }
+                container.innerHTML = data.map(r => `
+                    <div class="glass border border-white/5 rounded-[3.5rem] overflow-hidden group hover:scale-[1.02] transition-all duration-500">
+                        ${r.photo ? `<img src="${r.photo}" class="w-full h-80 object-cover group-hover:scale-110 transition duration-[2s]">` : ''}
+                        <div class="p-10">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <span class="text-green-500 font-black text-[10px] uppercase tracking-widest">${r.village}</span>
+                                    <h3 class="text-3xl font-black mt-2 tracking-tight">${r.farmer}</h3>
+                                </div>
+                                <div class="bg-green-500/10 p-3 rounded-2xl">🌱</div>
+                            </div>
+                            <p class="text-slate-400 mt-6 italic text-lg leading-relaxed">"${r.text}"</p>
+                            <div class="mt-10 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                <span>Ganesh Seeds Certified</span>
+                                <span>${r.date}</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            });
+        }
+        loadReports(); setInterval(loadReports, 10000);
+    </script>
 </body>
 </html>

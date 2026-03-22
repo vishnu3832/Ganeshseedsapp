@@ -1,153 +1,73 @@
-const express = require("express");
-const cors = require("cors");
-const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-
+const express = require('express');
+const path = require('path');
+const multer = require('multer');
+const fs = require('fs');
 const app = express();
 
-app.use(cors());
+const DB_FILE = path.join(__dirname, 'database.json');
+const UPLOADS = path.join(__dirname, 'uploads');
+
+if (!fs.existsSync(UPLOADS)) fs.mkdirSync(UPLOADS, { recursive: true });
+if (!fs.existsSync(DB_FILE)) fs.writeFileSync(DB_FILE, JSON.stringify({ users: [], reports: [] }));
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, UPLOADS),
+    filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
+});
+const upload = multer({ storage });
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static(UPLOADS));
+app.use(express.static(path.join(__dirname, '../')));
 
-const SECRET = "ganesh_secret_key";
+let currentUser = null;
+const getDB = () => JSON.parse(fs.readFileSync(DB_FILE));
+const saveDB = (data) => fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
 
-/* ================== MONGODB ================== */
-mongoose.connect("mongodb://127.0.0.1:27017/ganeshSeeds")
-  .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
-
-/* ================== MODELS ================== */
-
-// User
-const User = mongoose.model("User", {
-  username: String,
-  password: String,
-  role: String
-});
-
-// Product
-const Product = mongoose.model("Product", {
-  name: String,
-  price: Number,
-  image: String
-});
-
-// Order
-const Order = mongoose.model("Order", {
-  product: String,
-  quantity: Number,
-  username: String
-});
-
-/* ================== ROUTES ================== */
-
-// Create Admin (run once)
-app.get("/create-admin", async (req, res) => {
-  const existing = await User.findOne({ username: "admin" });
-
-  if (existing) return res.send("Admin already exists");
-
-  const hashed = await bcrypt.hash("1234", 10);
-
-  await User.create({
-    username: "admin",
-    password: hashed,
-    role: "admin"
-  });
-
-  res.send("Admin created");
-});
-app.get("/delete-admin", async (req, res) => {
-  try {
-    await User.deleteOne({ username: "admin" });
-    res.send("Admin deleted");
-  } catch (err) {
-    res.send("Error deleting admin");
-  }
-});
-// Register
-app.post("/register", async (req, res) => {
-  const { username, password, role } = req.body;
-
-  const existing = await User.findOne({ username });
-  if (existing) return res.json({ message: "User exists" });
-
-  const hashed = await bcrypt.hash(password, 10);
-
-  await User.create({
-    username,
-    password: hashed,
-    role
-  });
-
-  res.json({ message: "User registered" });
+// Registration
+app.post('/register', upload.single('userPhoto'), (req, res) => {
+    const db = getDB();
+    db.users.push({
+        username: req.body.fullname,
+        role: req.body.role,
+        village: req.body.village,
+        password: req.body.password,
+        photo: req.file ? `/uploads/${req.file.filename}` : '/father.jpg'
+    });
+    saveDB(db);
+    res.send(`<script>alert("Staff Onboarded successfully!"); window.location.href="/login.html";</script>`);
 });
 
 // Login
-app.post("/login", async (req, res) => {
-  const { username, password, role } = req.body;
-
-  const user = await User.findOne({ username, role });
-  if (!user) return res.json({ success: false });
-
-  const match = await bcrypt.compare(password, user.password);
-  if (!match) return res.json({ success: false });
-
-  const token = jwt.sign(
-    { username: user.username, role: user.role },
-    SECRET
-  );
-
-  res.json({
-    success: true,
-    token,
-    username: user.username,
-    role: user.role
-  });
+app.post('/login', (req, res) => {
+    const db = getDB();
+    const user = db.users.find(u => u.username === req.body.username && u.password === req.body.password);
+    if (user) {
+        currentUser = user;
+        const target = { manager: '/manager_dashboard.html', fieldassistant: '/field_assistant_dashboard.html', farmer: '/farmer_dashboard.html' };
+        res.redirect(target[user.role] || '/index.html');
+    } else {
+        res.send(`<script>alert("Invalid Credentials"); window.location.href="/login.html";</script>`);
+    }
 });
 
-// Products
-app.get("/products", async (req, res) => {
-  const products = await Product.find();
-  res.json(products);
+// Submit Report
+// In your server.js
+app.post('/submit-report', upload.single('fieldPhoto'), (req, res) => {
+    const db = getDB();
+    const newReport = {
+        farmer: req.body.farmerName,
+        village: req.body.village,
+        text: req.body.observations,
+        photo: req.file ? `/uploads/${req.file.filename}` : null,
+        date: new Date().toLocaleString()
+    };
+    db.reports.unshift(newReport);
+    saveDB(db);
+    res.send(`<script>alert("Report Sent to Mr. Nampally Gangadhar!"); window.location.href="/field_assistant_dashboard.html";</script>`);
 });
+app.get('/api/user', (req, res) => res.json(currentUser || {}));
+app.get('/api/reports', (req, res) => res.json(getDB().reports));
 
-app.post("/products", async (req, res) => {
-  const product = new Product(req.body);
-  await product.save();
-  res.json({ message: "Product added" });
-});
-
-// Orders
-app.post("/order", async (req, res) => {
-  const order = new Order(req.body);
-  await order.save();
-  res.json({ message: "Order placed" });
-});
-
-// Admin → all orders
-app.get("/orders", async (req, res) => {
-  const orders = await Order.find();
-  res.json(orders);
-});
-
-// User → own orders
-app.get("/my-orders/:username", async (req, res) => {
-  const orders = await Order.find({ username: req.params.username });
-  res.json(orders);
-});
-
-// Analytics
-app.get("/stats", async (req, res) => {
-  const users = await User.countDocuments();
-  const products = await Product.countDocuments();
-  const orders = await Order.countDocuments();
-
-  res.json({ users, products, orders });
-});
-
-/* ================== SERVER ================== */
-
-app.listen(5000, () => {
-  console.log("Server running on http://localhost:5000");
-});
+app.listen(3000, () => console.log("🚀 Server: http://localhost:3000"));

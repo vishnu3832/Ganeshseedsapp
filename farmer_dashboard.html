@@ -1,36 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Farmer Dashboard</title>
-<style>
-body { margin:0; font-family:'Segoe UI',sans-serif; background:#C8E6C9; padding:20px;}
-h1 { color:#2E7D32; text-align:center;}
-ul { list-style:none; padding:0; }
-li { background:#fff; margin:10px 0; padding:10px; border-radius:10px; box-shadow:0 3px 8px rgba(0,0,0,0.2);}
-img { max-width:100%; border-radius:8px; margin-top:5px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Hub | Ganesh Seeds</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body>
-<h1>Farmer Dashboard</h1>
-<h2>Your Reports</h2>
-<ul id="reportsList"></ul>
+<body class="bg-[#f8fafc]">
+    <header class="bg-white p-6 sticky top-0 z-50 border-b border-gray-100">
+        <div class="flex justify-between items-center max-w-5xl mx-auto">
+            <h1 class="text-2xl font-black text-green-900 tracking-tighter uppercase">Seed Catalog</h1>
+            <div class="flex items-center space-x-2">
+                <span class="text-xs font-bold text-gray-500 uppercase tracking-widest">Village: Rampur</span>
+                <img src="user.jpg" class="w-10 h-10 rounded-full object-cover border-2 border-green-500 shadow-sm">
+            </div>
+        </div>
+    </header>
 
-<script>
-const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
-const ul = document.getElementById('reportsList');
-const users = JSON.parse(localStorage.getItem('users')) || [];
+    <main class="max-w-5xl mx-auto p-6 space-y-12">
+        <div class="bg-green-800 rounded-[3rem] overflow-hidden shadow-2xl shadow-green-100 flex flex-col md:flex-row items-center p-8 text-white">
+            <div class="text-8xl md:text-9xl mb-8 md:mb-0 md:mr-12">🌾</div>
+            <div class="space-y-4">
+                <div class="inline-block px-3 py-1 bg-green-400 text-green-900 rounded-full text-[10px] font-black uppercase">Top Rated Choice</div>
+                <h2 class="text-4xl font-black leading-none">Super Gold Wheat Seeds</h2>
+                <p class="text-green-100/70 font-medium">Drought-resistant, high-yield variety. Perfect for Northern Soil.</p>
+                <div class="text-3xl font-black text-green-400">₹2,499 <span class="text-sm font-medium text-white/50">/ 50kg bag</span></div>
+                <button class="bg-white text-green-900 px-10 py-4 rounded-2xl font-black shadow-xl hover:bg-black hover:text-white transition-all uppercase text-xs tracking-widest">Request Samples</button>
+            </div>
+        </div>
 
-users.forEach(u=>{
-  if(u.username===currentUser.username){
-    u.reports.forEach(r=>{
-      const li = document.createElement('li');
-      li.innerHTML = `<strong>Date:</strong> ${r.date} | <strong>Village:</strong> ${r.village}<br><strong>Details:</strong> ${r.details}<br><img src="${r.photo}" alt="Field Photo">`;
-      ul.appendChild(li);
-    });
-  }
-});
-</script>
+        <section class="space-y-6">
+            <h3 class="text-xl font-black text-gray-900 uppercase tracking-tighter">Farmer Feedback & Experience</h3>
+            
+            <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-gray-100 flex items-start space-x-6">
+                <div class="bg-green-50 p-4 rounded-2xl text-2xl">💬</div>
+                <div class="flex-1 space-y-3">
+                    <textarea placeholder="Share your experience with Ganesh Seeds..." class="w-full bg-gray-50 p-4 rounded-2xl border-none outline-none font-bold text-gray-700 resize-none"></textarea>
+                    <button class="px-8 py-3 bg-green-800 text-white rounded-xl font-black text-xs uppercase tracking-widest shadow-lg hover:bg-black transition-all">Post Comment</button>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="font-black text-green-900">Ramesh Kumar</span>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase">2 days ago</span>
+                    </div>
+                    <p class="text-gray-600 font-medium italic">"The yield this year is 20% higher compared to local seeds. Highly recommended!"</p>
+                </div>
+            </div>
+        </section>
+    </main>
 </body>
 </html>
+<div class="flex items-center space-x-4 bg-white/10 p-4 rounded-3xl border border-white/10">
+    <img id="userAvatar" src="father.jpg" class="w-14 h-14 rounded-2xl object-cover border-2 border-green-400 shadow-lg">
+    <div>
+        <p id="userName" class="font-black text-sm text-white">Loading...</p>
+        <p id="userRole" class="text-[10px] font-bold text-green-400 uppercase tracking-widest">Verifying Identity</p>
+    </div>
+</div>
+
+<script>
+    fetch('/api/user')
+        .then(res => res.json())
+        .then(user => {
+            document.getElementById('userName').innerText = user.username;
+            document.getElementById('userRole').innerText = user.role;
+            document.getElementById('userAvatar').src = user.photo;
+        });
+</script>

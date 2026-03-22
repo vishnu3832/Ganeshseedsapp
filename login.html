@@ -1,53 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - Ganesh Seeds</title>
-<style>
-body { margin:0; font-family: 'Segoe UI', sans-serif; height:100vh; display:flex; justify-content:center; align-items:center; background:#A8E063; }
-.login-box { background:#fff; padding:40px 30px; border-radius:20px; text-align:center; width:400px; box-shadow:0 15px 50px rgba(0,0,0,0.3);}
-.login-box img { width:100px; height:100px; border-radius:50%; margin-bottom:15px; object-fit:cover; border:3px solid #2E7D32;}
-.login-box h2 { margin-bottom:20px; }
-.login-box input { width:100%; padding:12px; margin:10px 0; border-radius:10px; border:1px solid #ccc; }
-.login-box button { width:100%; padding:12px; border:none; border-radius:10px; background:#2E7D32; color:#fff; font-weight:bold; cursor:pointer; transition:0.3s; }
-.login-box button:hover { background:#1B5E20; transform:scale(1.03); }
-.login-box a { display:block; margin-top:15px; color:#2E7D32; text-decoration:none; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login | Ganesh Seeds</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
 </head>
-<body>
-<div class="login-box">
-  <img id="userPhoto" src="placeholder.png" alt="User Photo">
-  <h2>Login</h2>
-  <input type="text" placeholder="Username" id="username">
-  <input type="password" placeholder="Password" id="password">
-  <button onclick="login()">Login</button>
-  <a href="create_user.html">Create User</a>
-</div>
+<body class="bg-green-950 min-h-screen flex items-center justify-center p-6 antialiased font-['Plus_Jakarta_Sans']">
+    <div class="max-w-md w-full">
+        <div class="flex justify-center mb-10">
+            <div class="bg-white p-4 rounded-[2rem] shadow-2xl">
+                <div class="bg-green-800 px-6 py-4 rounded-2xl text-white font-black text-4xl">GS</div>
+            </div>
+        </div>
 
-<script>
-const urlParams = new URLSearchParams(window.location.search);
-const role = urlParams.get('role');
-document.querySelector('h2').innerText = role ? role.charAt(0).toUpperCase() + role.slice(1) + " Login" : "Login";
+        <div class="bg-white rounded-[3.5rem] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden">
+            <div class="p-12 pb-6 text-center">
+                <h2 class="text-4xl font-black text-gray-900 tracking-tight">Portal Access</h2>
+                <p class="text-gray-400 font-medium mt-2">Enter your credentials to continue.</p>
+            </div>
 
-let users = JSON.parse(localStorage.getItem('users')) || [];
-const firstUser = users.find(u=>u.role===role);
-if(firstUser) document.getElementById('userPhoto').src = firstUser.photo || "placeholder.png";
+            <form action="/login" method="POST" class="p-12 pt-6 space-y-6">
+                <div class="group">
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4 group-focus-within:text-green-600 transition">User Identity (Full Name)</label>
+                    <input type="text" name="username" placeholder="Arjun Verma" class="w-full p-5 mt-1 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-green-600 focus:bg-white outline-none font-bold text-gray-800 transition" required>
+                </div>
 
-function login(){
-  const username = document.getElementById('username').value.trim();
-  const password = document.getElementById('password').value.trim();
+                <div class="group">
+                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4 group-focus-within:text-green-600 transition">Secret Password</label>
+                    <input type="password" name="password" placeholder="••••••••" class="w-full p-5 mt-1 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-green-600 focus:bg-white outline-none font-bold text-gray-800 transition" required>
+                </div>
 
-  const found = users.find(u=>u.username===username && u.password===password && u.role===role);
-  if(found){
-    alert(`Welcome ${found.username}`);
-    localStorage.setItem('currentUser', JSON.stringify(found));
-    if(role==="admin") window.location.href="admin_dashboard.html";
-    else if(role==="manager") window.location.href="manager_dashboard.html";
-    else if(role==="field_assistant") window.location.href="field_assistant_dashboard.html";
-    else window.location.href="farmer_dashboard.html";
-  } else alert("Invalid credentials or role!");
-}
-</script>
+                <button type="submit" class="w-full bg-green-800 text-white py-6 rounded-[2rem] font-black text-xl shadow-2xl hover:bg-black transform active:scale-95 transition-all">
+                    SIGN IN NOW
+                </button>
+
+                <div class="pt-6 text-center border-t border-gray-50">
+                    <p class="text-sm font-bold text-gray-400">Unauthorized access is monitored.</p>
+                    <a href="create_user.html" class="inline-block mt-4 text-green-700 font-black text-xs uppercase tracking-widest hover:underline">New Staff? Register Here</a>
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
 </html>
