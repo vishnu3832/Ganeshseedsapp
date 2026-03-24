@@ -3,91 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ganesh Seeds - CEO Dashboard</title>
+    <title>Ganesh Seeds | Digital Agriculture Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #2e7d32; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        header { background: white; padding: 20px; border-radius: 15px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 6px rgba(0,0,0,0.1); margin-bottom: 30px; }
-        .ceo-profile { display: flex; align-items: center; gap: 15px; }
-        .ceo-profile img { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
-        .container { max-width: 1200px; margin: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .report-card { background: white; border-radius: 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05); transition: 0.3s; }
-        .report-card:hover { transform: translateY(-5px); }
-        .report-img { width: 100%; height: 200px; object-fit: cover; background: #eee; }
-        .report-content { padding: 15px; }
-        .report-content h3 { margin: 0; color: var(--primary); font-size: 1.2rem; }
-        .badge { background: #e8f5e9; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
-        .logout-btn { background: #c62828; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: bold; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0fdf4; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #14532d 100%); }
     </style>
 </head>
-<body>
-
-<div class="container">
-    <header>
-        <div class="ceo-profile">
-            <img id="ceo-img" src="https://via.placeholder.com/60" alt="CEO">
+<body class="antialiased">
+    <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center max-w-7xl mx-auto mt-4 rounded-3xl shadow-lg">
+        <div class="flex items-center space-x-3">
+            <div class="bg-green-800 p-2.5 rounded-2xl text-white font-black text-2xl shadow-inner">GS</div>
+            <h1 class="text-2xl font-black text-green-900 tracking-tighter uppercase">Ganesh Seeds</h1>
+        </div>
+        <div class="flex items-center bg-white/50 p-1.5 pr-6 rounded-full shadow-sm border border-green-100">
+            <img src="father.jpg" class="w-11 h-11 rounded-full border-2 border-green-500 object-cover mr-4 shadow-md">
             <div>
-                <h2 style="margin:0" id="ceo-name">Loading...</h2>
-                <p style="margin:0; color:#666;">CEO, Ganesh Seeds</p>
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">Founder & CEO</p>
+                <p class="text-sm font-extrabold text-green-900 leading-none mt-1">Mr. Ganesh</p>
             </div>
         </div>
-        <a href="/logout" class="logout-btn">Logout</a>
-    </header>
+    </nav>
 
-    <h2 style="color: #333; margin-bottom: 20px;">Live Field Reports</h2>
-    <div id="report-grid" class="grid">
-        <p>Fetching latest updates from field assistants...</p>
-    </div>
-</div>
+    <main class="max-w-7xl mx-auto px-8 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div class="space-y-10">
+            <div class="inline-flex items-center space-x-2 px-5 py-2 bg-green-100 text-green-800 rounded-full text-xs font-black tracking-widest uppercase">
+                <span class="relative flex h-2 w-2 mr-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                </span>
+                2026 Digital Harvest Season
+            </div>
+            <h2 class="text-7xl xl:text-8xl font-black text-gray-900 leading-[0.85] tracking-tighter">
+                Cultivating <span class="text-green-700 italic">Excellence</span> in Every Seed.
+            </h2>
+            <p class="text-xl text-gray-600 font-medium leading-relaxed max-w-xl">
+                The centralized management system for Ganesh Seeds. Seamlessly connecting our field assistants, managers, and farmers across the nation.
+            </p>
+            <div class="flex flex-wrap gap-5">
+                <a href="login.html" class="px-12 py-5 bg-green-800 text-white rounded-[2rem] font-black text-lg shadow-2xl shadow-green-200 hover:bg-black hover:-translate-y-1 transition-all duration-300">ENTER PORTAL</a>
+                <a href="create_user.html" class="px-12 py-5 bg-white text-green-900 border-2 border-green-100 rounded-[2rem] font-black text-lg hover:bg-green-50 hover:-translate-y-1 transition-all duration-300">REGISTER STAFF</a>
+            </div>
+        </div>
 
-<script>
-    async function loadDashboard() {
-        try {
-            // 1. Fetch CEO Details
-            const userRes = await fetch('/api/user');
-            const userData = await userRes.json();
-            
-            if (userData.username) {
-                document.getElementById('ceo-name').innerText = userData.username;
-                document.getElementById('ceo-img').src = userData.photo || 'https://via.placeholder.com/60';
-            }
-
-            // 2. Fetch All Field Reports from MongoDB
-            const reportRes = await fetch('/api/reports');
-            const reports = await reportRes.json();
-            
-            const grid = document.getElementById('report-grid');
-            if (reports.length === 0) {
-                grid.innerHTML = "<p>No reports submitted yet.</p>";
-                return;
-            }
-
-            grid.innerHTML = reports.map(report => `
-                <div class="report-card">
-                    <img class="report-img" src="${report.photo || 'https://via.placeholder.com/300x200?text=No+Photo'}" alt="Field Report">
-                    <div class="report-content">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                            <span class="badge">${report.village}</span>
-                            <small style="color:#888">${report.date}</small>
-                        </div>
-                        <h3>Farmer: ${report.farmer}</h3>
-                        <p style="color:#555; font-size:0.95rem; line-height:1.4;">${report.text}</p>
-                        <hr style="border:0; border-top:1px solid #eee; margin:15px 0;">
-                        <small style="color:#2e7d32"><b>Submitted By:</b> ${report.submittedBy || 'Assistant'}</small>
+        <div class="relative group">
+            <div class="absolute -inset-4 bg-green-400/20 rounded-[4rem] blur-3xl group-hover:bg-green-400/30 transition duration-1000"></div>
+            <div class="relative hero-gradient p-12 rounded-[4rem] shadow-2xl text-white overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 text-9xl opacity-10 font-black">🌱</div>
+                <h3 class="text-4xl font-black mb-6 leading-tight">"Our seeds are the foundation of a prosperous future."</h3>
+                <p class="text-green-100 text-lg font-medium opacity-80 italic">— A Message from Management</p>
+                <div class="mt-12 flex gap-4">
+                    <div class="bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/10 flex-1">
+                        <p class="text-3xl font-black">99%</p>
+                        <p class="text-xs font-bold uppercase tracking-widest mt-1 opacity-60">Germination Rate</p>
+                    </div>
+                    <div class="bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/10 flex-1">
+                        <p class="text-3xl font-black">50k+</p>
+                        <p class="text-xs font-bold uppercase tracking-widest mt-1 opacity-60">Happy Farmers</p>
                     </div>
                 </div>
-            `).join('');
-
-        } catch (error) {
-            console.error("Dashboard Load Error:", error);
-            document.getElementById('report-grid').innerHTML = "<p>Error connecting to Ganesh Seeds Server. Please refresh.</p>";
-        }
-    }
-
-    // Load data when page opens
-    window.onload = loadDashboard;
-</script>
-
+            </div>
+        </div>
+    </main>
 </body>
 </html>
