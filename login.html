@@ -3,44 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Login | Ganesh Seeds</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <title>Ganesh Seeds ERP | Secure Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; transition: all 0.3s ease; }
+        body {
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: linear-gradient(rgba(0, 77, 64, 0.85), rgba(0, 77, 64, 0.85)), 
+                        url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?q=80&w=2070');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-wrapper {
+            background: rgba(255, 255, 255, 0.98);
+            width: 100%;
+            max-width: 480px;
+            padding: 60px 40px;
+            border-radius: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .login-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 8px;
+            background: linear-gradient(90deg, #2e7d32, #81c784);
+        }
+        .brand-logo {
+            font-size: 55px;
+            color: #1b5e20;
+            margin-bottom: 15px;
+            display: inline-block;
+            filter: drop-shadow(0 4px 6px rgba(27, 94, 32, 0.2));
+        }
+        h2 { font-size: 32px; color: #1a1a1a; margin: 0; font-weight: 800; }
+        p.subtitle { color: #666; margin-bottom: 40px; font-size: 16px; }
+        .input-box { position: relative; margin-bottom: 25px; text-align: left; }
+        .input-box label { display: block; margin-bottom: 8px; font-weight: 600; color: #444; font-size: 14px; }
+        .input-box i { position: absolute; left: 18px; top: 40px; color: #1b5e20; font-size: 18px; }
+        .input-box input {
+            width: 100%;
+            padding: 16px 16px 16px 52px;
+            border: 2px solid #edf2f7;
+            border-radius: 16px;
+            font-size: 16px;
+            background: #f8fafc;
+            outline: none;
+        }
+        .input-box input:focus { border-color: #1b5e20; background: #fff; box-shadow: 0 0 0 4px rgba(27, 94, 32, 0.1); }
+        .btn-submit {
+            background: #1b5e20;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 18px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 15px -3px rgba(27, 94, 32, 0.4);
+            margin-top: 10px;
+        }
+        .btn-submit:hover { background: #2e7d32; transform: translateY(-2px); box-shadow: 0 20px 25px -5px rgba(27, 94, 32, 0.4); }
+        .footer-text { margin-top: 35px; color: #718096; font-size: 14px; }
+        .footer-text a { color: #1b5e20; text-decoration: none; font-weight: 700; }
+    </style>
 </head>
-<body class="bg-green-950 min-h-screen flex items-center justify-center p-6 antialiased font-['Plus_Jakarta_Sans']">
-    <div class="max-w-md w-full">
-        <div class="flex justify-center mb-10">
-            <div class="bg-white p-4 rounded-[2rem] shadow-2xl">
-                <div class="bg-green-800 px-6 py-4 rounded-2xl text-white font-black text-4xl">GS</div>
+<body>
+    <div class="login-wrapper">
+        <div class="brand-logo"><i class="fas fa-leaf"></i></div>
+        <h2>Ganesh Seeds ERP</h2>
+        <p class="subtitle">Enter your credentials to manage operations</p>
+        <form action="/login" method="POST">
+            <div class="input-box">
+                <label>System Username</label>
+                <i class="fas fa-user-circle"></i>
+                <input type="text" name="username" placeholder="e.g. nampally_g" required>
             </div>
-        </div>
-
-        <div class="bg-white rounded-[3.5rem] shadow-[0_35px_60px_-15px_rgba(0,0,0,0.5)] overflow-hidden">
-            <div class="p-12 pb-6 text-center">
-                <h2 class="text-4xl font-black text-gray-900 tracking-tight">Portal Access</h2>
-                <p class="text-gray-400 font-medium mt-2">Enter your credentials to continue.</p>
+            <div class="input-box">
+                <label>Security Password</label>
+                <i class="fas fa-key"></i>
+                <input type="password" name="password" placeholder="••••••••" required>
             </div>
-
-            <form action="/login" method="POST" class="p-12 pt-6 space-y-6">
-                <div class="group">
-                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4 group-focus-within:text-green-600 transition">User Identity (Full Name)</label>
-                    <input type="text" name="username" placeholder="Arjun Verma" class="w-full p-5 mt-1 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-green-600 focus:bg-white outline-none font-bold text-gray-800 transition" required>
-                </div>
-
-                <div class="group">
-                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4 group-focus-within:text-green-600 transition">Secret Password</label>
-                    <input type="password" name="password" placeholder="••••••••" class="w-full p-5 mt-1 rounded-2xl bg-gray-50 border-2 border-transparent focus:border-green-600 focus:bg-white outline-none font-bold text-gray-800 transition" required>
-                </div>
-
-                <button type="submit" class="w-full bg-green-800 text-white py-6 rounded-[2rem] font-black text-xl shadow-2xl hover:bg-black transform active:scale-95 transition-all">
-                    SIGN IN NOW
-                </button>
-
-                <div class="pt-6 text-center border-t border-gray-50">
-                    <p class="text-sm font-bold text-gray-400">Unauthorized access is monitored.</p>
-                    <a href="create_user.html" class="inline-block mt-4 text-green-700 font-black text-xs uppercase tracking-widest hover:underline">New Staff? Register Here</a>
-                </div>
-            </form>
+            <button type="submit" class="btn-submit">Initialize Session</button>
+        </form>
+        <div class="footer-text">
+            New executive? <a href="/register.html">Create Staff Account</a>
         </div>
     </div>
 </body>

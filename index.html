@@ -3,69 +3,185 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ganesh Seeds | Digital Agriculture Portal</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <title>Ganesh Seeds | CEO Command Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0fdf4; }
-        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
-        .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #14532d 100%); }
+        :root {
+            --primary: #1b5e20;
+            --accent: #4caf50;
+            --dark: #121212;
+            --glass: rgba(255, 255, 255, 0.95);
+            --shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+            display: flex;
+            min-height: 100vh;
+        }
+        /* Sidebar Styling */
+        .sidebar {
+            width: 260px;
+            background: var(--primary);
+            color: white;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.1);
+        }
+        .sidebar h2 { font-size: 20px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+        .nav-item {
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.1); }
+        .nav-item i { margin-right: 15px; width: 20px; }
+
+        /* Main Content */
+        .main-content { flex: 1; padding: 40px; overflow-y: auto; }
+        
+        /* CEO Profile Header */
+        .header-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--shadow);
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease;
+        }
+        .ceo-avatar-container {
+            position: relative;
+            margin-right: 30px;
+        }
+        .ceo-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--accent);
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.3);
+        }
+        .status-dot {
+            width: 20px;
+            height: 20px;
+            background: #4caf50;
+            border: 3px solid white;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 10px;
+            right: 5px;
+        }
+        .ceo-details h1 { margin: 0; font-size: 28px; color: var(--dark); }
+        .ceo-details p { margin: 5px 0; color: #666; font-weight: 500; }
+
+        /* Report Grid */
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+        }
+        .report-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .report-card:hover { transform: translateY(-5px); }
+        .report-img { width: 100%; height: 220px; object-fit: cover; }
+        .report-body { padding: 20px; }
+        .report-meta { display: flex; justify-content: space-between; font-size: 12px; color: #888; margin-bottom: 10px; }
+        .badge { background: #e8f5e9; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-weight: bold; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
-<body class="antialiased">
-    <nav class="glass sticky top-0 z-50 px-8 py-4 flex justify-between items-center max-w-7xl mx-auto mt-4 rounded-3xl shadow-lg">
-        <div class="flex items-center space-x-3">
-            <div class="bg-green-800 p-2.5 rounded-2xl text-white font-black text-2xl shadow-inner">GS</div>
-            <h1 class="text-2xl font-black text-green-900 tracking-tighter uppercase">Ganesh Seeds</h1>
-        </div>
-        <div class="flex items-center bg-white/50 p-1.5 pr-6 rounded-full shadow-sm border border-green-100">
-            <img src="father.jpg" class="w-11 h-11 rounded-full border-2 border-green-500 object-cover mr-4 shadow-md">
-            <div>
-                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest leading-none">Founder & CEO</p>
-                <p class="text-sm font-extrabold text-green-900 leading-none mt-1">Mr. Ganesh</p>
-            </div>
-        </div>
-    </nav>
+<body>
 
-    <main class="max-w-7xl mx-auto px-8 py-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-        <div class="space-y-10">
-            <div class="inline-flex items-center space-x-2 px-5 py-2 bg-green-100 text-green-800 rounded-full text-xs font-black tracking-widest uppercase">
-                <span class="relative flex h-2 w-2 mr-2">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                </span>
-                2026 Digital Harvest Season
+    <div class="sidebar">
+        <h2>GANESH SEEDS</h2>
+        <a href="#" class="nav-item"><i class="fas fa-home"></i> Dashboard</a>
+        <a href="#" class="nav-item"><i class="fas fa-users"></i> Staff Directory</a>
+        <a href="#" class="nav-item"><i class="fas fa-chart-line"></i> Yield Reports</a>
+        <a href="/logout" class="nav-item" style="margin-top: auto; background: #c62828;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main-content">
+        <div class="header-card">
+            <div class="ceo-avatar-container">
+                <img id="ceo-img" src="https://via.placeholder.com/120" class="ceo-img">
+                <div class="status-dot"></div>
             </div>
-            <h2 class="text-7xl xl:text-8xl font-black text-gray-900 leading-[0.85] tracking-tighter">
-                Cultivating <span class="text-green-700 italic">Excellence</span> in Every Seed.
-            </h2>
-            <p class="text-xl text-gray-600 font-medium leading-relaxed max-w-xl">
-                The centralized management system for Ganesh Seeds. Seamlessly connecting our field assistants, managers, and farmers across the nation.
-            </p>
-            <div class="flex flex-wrap gap-5">
-                <a href="login.html" class="px-12 py-5 bg-green-800 text-white rounded-[2rem] font-black text-lg shadow-2xl shadow-green-200 hover:bg-black hover:-translate-y-1 transition-all duration-300">ENTER PORTAL</a>
-                <a href="create_user.html" class="px-12 py-5 bg-white text-green-900 border-2 border-green-100 rounded-[2rem] font-black text-lg hover:bg-green-50 hover:-translate-y-1 transition-all duration-300">REGISTER STAFF</a>
+            <div class="ceo-details">
+                <p>Welcome Back,</p>
+                <h1 id="ceo-name">Loading Profile...</h1>
+                <span class="badge">CHIEF EXECUTIVE OFFICER</span>
             </div>
         </div>
 
-        <div class="relative group">
-            <div class="absolute -inset-4 bg-green-400/20 rounded-[4rem] blur-3xl group-hover:bg-green-400/30 transition duration-1000"></div>
-            <div class="relative hero-gradient p-12 rounded-[4rem] shadow-2xl text-white overflow-hidden">
-                <div class="absolute top-0 right-0 p-8 text-9xl opacity-10 font-black">🌱</div>
-                <h3 class="text-4xl font-black mb-6 leading-tight">"Our seeds are the foundation of a prosperous future."</h3>
-                <p class="text-green-100 text-lg font-medium opacity-80 italic">— A Message from Management</p>
-                <div class="mt-12 flex gap-4">
-                    <div class="bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/10 flex-1">
-                        <p class="text-3xl font-black">99%</p>
-                        <p class="text-xs font-bold uppercase tracking-widest mt-1 opacity-60">Germination Rate</p>
-                    </div>
-                    <div class="bg-white/10 p-6 rounded-3xl backdrop-blur-md border border-white/10 flex-1">
-                        <p class="text-3xl font-black">50k+</p>
-                        <p class="text-xs font-bold uppercase tracking-widest mt-1 opacity-60">Happy Farmers</p>
-                    </div>
-                </div>
+        <h2 style="color: var(--dark); margin-bottom: 20px;">Recent Field Observations</h2>
+        <div id="report-container" class="report-grid">
             </div>
-        </div>
-    </main>
+    </div>
+
+    <script>
+        async function loadData() {
+            try {
+                // 1. Fetch CEO info from MongoDB
+                const userRes = await fetch('/api/user');
+                const user = await userRes.json();
+                
+                if (user && user.username !== "Guest") {
+                    document.getElementById('ceo-name').innerText = user.username;
+                    document.getElementById('ceo-img').src = user.photo;
+                } else {
+                    window.location.href = "/login.html";
+                }
+
+                // 2. Fetch Field Reports
+                const reportRes = await fetch('/api/reports');
+                const reports = await reportRes.json();
+                const container = document.getElementById('report-container');
+                
+                if (reports.length === 0) {
+                    container.innerHTML = "<h3>No reports found in database.</h3>";
+                    return;
+                }
+
+                container.innerHTML = reports.map(r => `
+                    <div class="report-card">
+                        <img src="${r.photo || 'https://via.placeholder.com/400x220?text=No+Photo'}" class="report-img">
+                        <div class="report-body">
+                            <div class="report-meta">
+                                <span><i class="fas fa-map-marker-alt"></i> ${r.village}</span>
+                                <span><i class="far fa-calendar-alt"></i> ${r.date}</span>
+                            </div>
+                            <h3 style="margin: 10px 0; color: var(--primary);">Farmer: ${r.farmer}</h3>
+                            <p style="color: #555; font-size: 14px; line-height: 1.6;">${r.text}</p>
+                            <div style="border-top: 1px solid #eee; padding-top: 10px; margin-top: 10px; font-size: 12px; color: #999;">
+                                Submitted by: <strong>${r.submittedBy || 'Field Staff'}</strong>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+        window.onload = loadData;
+    </script>
 </body>
 </html>

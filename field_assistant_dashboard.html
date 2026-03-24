@@ -4,78 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Field Terminal | Ganesh Seeds</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root { --primary: #2e7d32; --secondary: #f1f8e9; }
+        body { font-family: 'Inter', sans-serif; background: #f9f9f9; margin: 0; color: #333; }
+        .nav-header { background: #fff; padding: 15px 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 100; }
+        .user-pill { display: flex; align-items: center; background: var(--secondary); padding: 5px 15px 5px 5px; border-radius: 50px; }
+        .user-pill img { width: 35px; height: 35px; border-radius: 50%; margin-right: 10px; object-fit: cover; }
+        .container { padding: 25px; max-width: 700px; margin: auto; }
+        .report-form { background: white; border-radius: 25px; padding: 35px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .form-section { margin-bottom: 30px; }
+        .form-section label { display: block; font-weight: 700; margin-bottom: 12px; font-size: 15px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
+        input[type="text"], textarea { 
+            width: 100%; padding: 16px; border: 2px solid #f0f0f0; border-radius: 15px; 
+            font-size: 16px; background: #fafafa; outline: none; transition: 0.3s;
+        }
+        input:focus, textarea:focus { border-color: var(--primary); background: #fff; }
+        .photo-upload-zone {
+            border: 3px dashed #cbd5e0; background: #f8fafc;
+            padding: 50px 20px; border-radius: 20px; text-align: center;
+            cursor: pointer; position: relative; transition: 0.3s;
+        }
+        .photo-upload-zone:hover { border-color: var(--primary); background: #f0fdf4; }
+        .photo-upload-zone i { font-size: 40px; color: #64748b; margin-bottom: 15px; }
+        #image-preview-container { margin-top: 20px; display: none; position: relative; }
+        #image-preview-container img { width: 100%; border-radius: 15px; border: 4px solid white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn-submit-report {
+            background: var(--primary); color: white; border: none; width: 100%;
+            padding: 20px; border-radius: 18px; font-size: 18px; font-weight: 800;
+            cursor: pointer; margin-top: 20px; display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-submit-report:active { transform: scale(0.98); }
+    </style>
 </head>
-<body class="bg-slate-50 font-['Plus_Jakarta_Sans'] pb-24">
-    <header class="bg-green-900 p-12 rounded-b-[4rem] shadow-2xl text-white relative overflow-hidden">
-        <div class="max-w-4xl mx-auto flex items-center justify-between relative z-10">
-            <div>
-                <p class="text-[10px] font-black uppercase tracking-[0.3em] text-green-400 mb-2">Live Reporting Terminal</p>
-                <h1 class="text-4xl font-black tracking-tighter leading-none text-white">Daily Field Log</h1>
-            </div>
-            <img id="staffAvatar" src="/father.jpg" class="w-16 h-16 rounded-[1.5rem] border-4 border-green-800/50 object-cover shadow-2xl">
+<body>
+    <header class="nav-header">
+        <h2 style="margin:0; font-size: 20px; color: var(--primary);">Ganesh Seeds <span style="font-weight: 300;">Field</span></h2>
+        <div class="user-pill">
+            <img id="profile-pic" src="https://via.placeholder.com/35" alt="User">
+            <span id="display-name" style="font-weight: 600; font-size: 14px;">Assistant</span>
         </div>
     </header>
 
-    <main class="max-w-4xl mx-auto px-6 -mt-12 relative z-20">
-        <form action="/submit-report" method="POST" enctype="multipart/form-data" class="bg-white p-10 md:p-14 rounded-[3.5rem] shadow-2xl space-y-10 border border-gray-100">
+    <div class="container">
+        <div class="report-form">
+            <h1 style="margin-top:0; font-size: 24px;">Submit Field Observation</h1>
+            <p style="color: #666; margin-bottom: 30px;">This report will be sent directly to Mr. Nampally Gangadhar's dashboard.</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="space-y-1">
-                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Farmer Name</label>
-                    <input type="text" name="farmerName" placeholder="Ex: Rajesh Kumar" class="w-full p-5 rounded-2xl bg-gray-50 border-none font-bold text-gray-800 focus:ring-2 focus:ring-green-600 outline-none" required>
+            <form action="/submit-report" method="POST" enctype="multipart/form-data">
+                <div class="form-section">
+                    <label><i class="fas fa-user-tag"></i> Farmer Details</label>
+                    <input type="text" name="farmerName" placeholder="Full name of the farmer" required>
                 </div>
-                <div class="space-y-1">
-                    <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Village Location</label>
-                    <input type="text" name="village" placeholder="Ex: Rampur North" class="w-full p-5 rounded-2xl bg-gray-50 border-none font-bold text-gray-800 focus:ring-2 focus:ring-green-600 outline-none" required>
+                
+                <div class="form-section">
+                    <label><i class="fas fa-map-marked-alt"></i> Location (Village)</label>
+                    <input type="text" name="village" placeholder="Name of the village/district" required>
                 </div>
-            </div>
 
-            <div class="space-y-1">
-                <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-4">Detailed Observations</label>
-                <textarea name="observations" rows="4" placeholder="How is the crop health?" class="w-full p-5 rounded-2xl bg-gray-50 border-none font-bold text-gray-800 focus:ring-2 focus:ring-green-600 outline-none resize-none" required></textarea>
-            </div>
-
-            <div class="bg-green-50 border-4 border-dashed border-green-100 rounded-[3rem] p-10 text-center relative group">
-                <div id="previewContainer" class="hidden mb-4">
-                    <img id="imagePreview" class="w-48 h-48 object-cover rounded-3xl mx-auto border-4 border-white shadow-lg">
+                <div class="form-section">
+                    <label><i class="fas fa-microscope"></i> Field Observations</label>
+                    <textarea name="observations" rows="5" placeholder="Describe crop growth, moisture, or pest sightings..."></textarea>
                 </div>
-                <div id="uploadPrompt">
-                    <div class="text-5xl mb-4">📸</div>
-                    <label for="fieldPhoto" class="cursor-pointer bg-green-800 text-white px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-xl inline-block hover:bg-black transition">Capture Crop Photo</label>
-                </div>
-                <input type="file" name="fieldPhoto" id="fieldPhoto" accept="image/*" capture="camera" class="hidden" required onchange="previewImage(this)">
-                <p class="text-[10px] text-gray-400 mt-4 font-black uppercase tracking-widest">Required for submission to Mr. Gangadhar</p>
-            </div>
 
-            <button type="submit" class="w-full bg-green-900 text-white py-8 rounded-[2.5rem] font-black text-2xl shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all">
-                TRANSMIT TO CEO
-            </button>
-        </form>
-    </main>
+                <div class="form-section">
+                    <label><i class="fas fa-camera"></i> Evidence Collection</label>
+                    <div class="photo-upload-zone" id="drop-zone" onclick="document.getElementById('reportPhoto').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p style="font-weight: 600;">Tap to open camera or upload photo</p>
+                        <p style="font-size: 12px; color: #94a3b8;">Max size 5MB (JPG, PNG)</p>
+                        <input type="file" name="fieldPhoto" id="reportPhoto" accept="image/*" hidden required>
+                    </div>
+                    <div id="image-preview-container">
+                        <img id="preview-img" src="">
+                        <p style="color: #666; font-size: 12px; margin-top:10px;">Photo selected. Tap "Evidence Collection" to change.</p>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit-report">
+                    <i class="fas fa-paper-plane"></i> Sync to Cloud Dashboard
+                </button>
+            </form>
+        </div>
+    </div>
 
     <script>
-        // Image Preview Script
-        function previewImage(input) {
-            const container = document.getElementById('previewContainer');
-            const preview = document.getElementById('imagePreview');
-            const prompt = document.getElementById('uploadPrompt');
-            
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    container.classList.remove('hidden');
-                    prompt.classList.add('opacity-50');
-                }
-                reader.readAsDataURL(input.files[0]);
+        // Load Profile Data
+        fetch('/api/user').then(r => r.json()).then(data => {
+            if(data.username) {
+                document.getElementById('display-name').innerText = data.username;
+                document.getElementById('profile-pic').src = data.photo;
             }
-        }
+        });
 
-        // Fetch User Info
-        fetch('/api/user').then(r => r.json()).then(u => {
-            if(u.photo) document.getElementById('staffAvatar').src = u.photo;
+        // Image Preview Logic
+        document.getElementById('reportPhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    document.getElementById('preview-img').src = event.target.result;
+                    document.getElementById('image-preview-container').style.display = 'block';
+                    document.getElementById('drop-zone').style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
         });
     </script>
 </body>
