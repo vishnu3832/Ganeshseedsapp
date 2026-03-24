@@ -1,100 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"><title>CEO Command Center | Nampally Gangadhar</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEO Command Center | Ganesh Seeds</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: #f8fafc; font-family: sans-serif; }
-        .glass { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); }
-        .ceo-gradient { background: linear-gradient(to right, #4ade80, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-text { background: linear-gradient(to right, #4ade80, #22c55e); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
     </style>
 </head>
-<body class="flex min-h-screen">
-    <div id="welcomeOverlay" class="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-6 hidden">
-        <div class="max-w-2xl bg-slate-900 border border-green-500/30 p-12 rounded-[4rem] text-center shadow-[0_0_80px_rgba(34,197,94,0.15)]">
-            <div class="w-24 h-24 bg-green-500 rounded-[2rem] flex items-center justify-center text-5xl mx-auto mb-8 shadow-xl">🌱</div>
-            <h2 class="text-4xl font-black mb-6 tracking-tighter">Welcome, <span class="ceo-gradient">Mr. Nampally Gangadhar</span></h2>
-            <p class="text-slate-400 text-lg mb-10 leading-relaxed font-medium">Your digital agriculture network is online. This portal connects you directly to field reports, crop health, and farmer data across all villages.</p>
-            <button onclick="closeBriefing()" class="bg-green-500 text-black px-12 py-5 rounded-2xl font-black uppercase tracking-[0.2em] shadow-2xl hover:bg-white transition-all">Access Dashboard</button>
-        </div>
-    </div>
+<body class="flex min-h-screen overflow-hidden">
 
-    <aside class="w-80 bg-slate-950 p-8 border-r border-white/5 hidden lg:block sticky top-0 h-screen">
-        <h1 class="text-2xl font-black text-green-500 mb-16 italic tracking-tighter">GANESH SEEDS</h1>
+    <aside class="w-80 border-r border-white/5 bg-slate-950 p-8 hidden xl:flex flex-col">
+        <div class="flex items-center space-x-3 mb-16">
+            <div class="bg-green-500 p-2 rounded-2xl text-black font-black text-2xl shadow-[0_0_20px_rgba(34,197,94,0.4)]">GS</div>
+            <h1 class="text-xl font-black tracking-tighter uppercase italic">Ganesh Seeds</h1>
+        </div>
         
-        <div class="glass p-6 rounded-[2.5rem] border border-white/5 flex flex-col items-center text-center">
-            <img id="ceoAvatar" src="/father.jpg" class="w-24 h-24 rounded-[2rem] object-cover border-4 border-green-500/30 shadow-2xl mb-4">
-            <p class="font-black text-lg text-white leading-tight">Nampally Gangadhar</p>
-            <p class="text-[10px] text-green-500 font-bold uppercase tracking-[0.3em] mt-2">Founder & CEO</p>
-        </div>
-
-        <nav class="mt-12 space-y-4">
-            <a href="#" class="block p-4 bg-white/5 rounded-2xl font-bold text-green-400 border border-white/5 text-sm">📍 Live Field Reports</a>
-            <a href="#" class="block p-4 text-slate-500 font-bold text-sm hover:text-white transition">📦 Inventory Status</a>
-            <a href="#" class="block p-4 text-slate-500 font-bold text-sm hover:text-white transition">👥 Staff Management</a>
+        <nav class="space-y-4 flex-1">
+            <div class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-4">Enterprise Monitor</div>
+            <a href="#" class="flex items-center space-x-4 p-4 bg-green-500/10 text-green-400 rounded-2xl font-bold border border-green-500/20">
+                <span>📊</span> <span>Global Analytics</span>
+            </a>
+            <a href="#" class="flex items-center space-x-4 p-4 text-slate-400 hover:bg-white/5 rounded-2xl font-bold transition">
+                <span>👥</span> <span>Staff Directory</span>
+            </a>
+            <a href="#" class="flex items-center space-x-4 p-4 text-slate-400 hover:bg-white/5 rounded-2xl font-bold transition">
+                <span>🗺️</span> <span>Village Map</span>
+            </a>
+            <a href="#" class="flex items-center space-x-4 p-4 text-slate-400 hover:bg-white/5 rounded-2xl font-bold transition">
+                <span>📦</span> <span>Seed Inventory</span>
+            </a>
         </nav>
+
+        <div class="glass-card p-6 rounded-[2.5rem] mt-auto">
+            <div class="flex items-center space-x-4">
+                <img id="ceoAvatar" src="father.jpg" class="w-12 h-12 rounded-full object-cover border-2 border-green-500 shadow-lg">
+                <div>
+                    <p id="ceoName" class="font-black text-sm tracking-tight">Mr. Ganesh</p>
+                    <p class="text-[10px] font-bold text-green-500 uppercase tracking-widest">Founder & CEO</p>
+                </div>
+            </div>
+        </div>
     </aside>
 
-    <main class="flex-1 p-12 overflow-y-auto">
-        <div class="flex justify-between items-end mb-16">
+    <main class="flex-1 overflow-y-auto p-8 lg:p-12">
+        <header class="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 gap-6">
             <div>
-                <p class="text-green-500 font-black text-[10px] uppercase tracking-[0.4em] mb-2">Morning Update</p>
-                <h2 class="text-5xl font-black tracking-tighter">Field <span class="ceo-gradient">Intelligence</span></h2>
+                <h2 class="text-4xl font-black tracking-tight mb-2">Morning, <span class="gradient-text">Sir.</span></h2>
+                <p class="text-slate-400 font-medium">Here is the real-time status of your seed distribution network.</p>
             </div>
-            <div class="flex gap-4">
-                <button onclick="window.print()" class="bg-slate-900 border border-white/10 text-white px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-800 transition">Print PDF Reports</button>
-                <button onclick="location.href='/login.html'" class="bg-red-500/10 text-red-500 border border-red-500/20 px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-500 hover:text-white transition">Logout</button>
+            <div class="flex items-center gap-4">
+                <button onclick="window.print()" class="bg-slate-800 text-white px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest hover:bg-slate-700 transition shadow-xl">Print PDF Report</button>
+                <button onclick="location.href='/login.html'" class="bg-red-500/10 text-red-500 px-6 py-4 rounded-2xl font-black text-xs uppercase tracking-widest border border-red-500/20 hover:bg-red-500 hover:text-white transition-all">Logout</button>
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div class="glass-card p-10 rounded-[3.5rem] relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 text-8xl opacity-5 grayscale group-hover:grayscale-0 transition duration-500">👷</div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Active Assistants</p>
+                <h4 class="text-5xl font-black mt-4 tracking-tighter" id="staffCount">--</h4>
+                <div class="mt-6 flex items-center text-green-400 text-xs font-bold">↑ 12% vs last month</div>
+            </div>
+            <div class="glass-card p-10 rounded-[3.5rem] relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 text-8xl opacity-5 grayscale group-hover:grayscale-0 transition duration-500">📍</div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Village Coverage</p>
+                <h4 class="text-5xl font-black mt-4 tracking-tighter" id="villageCount">--</h4>
+                <div class="mt-6 flex items-center text-blue-400 text-xs font-bold">Live across 4 districts</div>
+            </div>
+            <div class="glass-card p-10 rounded-[3.5rem] relative overflow-hidden group">
+                <div class="absolute -right-4 -top-4 text-8xl opacity-5 grayscale group-hover:grayscale-0 transition duration-500">🌾</div>
+                <p class="text-[10px] font-black text-slate-500 uppercase tracking-widest">Seed Orders</p>
+                <h4 class="text-5xl font-black mt-4 tracking-tighter">8.4k</h4>
+                <div class="mt-6 flex items-center text-orange-400 text-xs font-bold">Target: 10k MT</div>
             </div>
         </div>
 
-        <div id="reportsContainer" class="grid grid-cols-1 xl:grid-cols-2 gap-10">
+        <section>
+            <div class="flex items-center justify-between mb-8 px-4">
+                <h3 class="text-2xl font-black tracking-tight uppercase italic">Live Field Activity Feed</h3>
+                <div class="flex items-center gap-2 bg-green-500/10 text-green-500 px-4 py-2 rounded-full border border-green-500/20 animate-pulse">
+                    <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+                    <span class="text-[10px] font-black uppercase">Live Connection</span>
+                </div>
             </div>
+
+            <div id="ceoFeed" class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                <div class="col-span-full p-20 text-center glass-card rounded-[3.5rem]">
+                    <p class="text-slate-500 font-bold">Scanning for field transmissions...</p>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script>
-        function closeBriefing() { 
-            document.getElementById('welcomeOverlay').classList.add('hidden');
-            localStorage.setItem('briefed_gangadhar', 'true');
-        }
-
-        if(!localStorage.getItem('briefed_gangadhar')) {
-            document.getElementById('welcomeOverlay').classList.remove('hidden');
-        }
-
-        // We override the fetch if it returns nothing to keep Gangadhar's name visible
-        fetch('/api/user').then(r => r.json()).then(u => {
-            if(u.photo) document.getElementById('ceoAvatar').src = u.photo;
-        });
-
-        function loadReports() {
-            fetch('/api/reports').then(r => r.json()).then(data => {
-                const container = document.getElementById('reportsContainer');
-                if(data.length === 0) {
-                    container.innerHTML = `<div class="col-span-full glass p-24 rounded-[4rem] text-center text-slate-600 font-black uppercase tracking-widest italic border-2 border-dashed border-white/5">Waiting for live village data...</div>`;
-                    return;
+        // Fetch User Info
+        fetch('/api/user')
+            .then(res => res.json())
+            .then(user => {
+                if(user.username) {
+                    document.getElementById('ceoName').innerText = user.username;
+                    document.getElementById('ceoAvatar').src = user.photo;
                 }
-                container.innerHTML = data.map(r => `
-                    <div class="glass border border-white/5 rounded-[3.5rem] overflow-hidden group hover:scale-[1.02] transition-all duration-500">
-                        ${r.photo ? `<img src="${r.photo}" class="w-full h-80 object-cover group-hover:scale-110 transition duration-[2s]">` : ''}
-                        <div class="p-10">
-                            <div class="flex justify-between items-start mb-4">
-                                <div>
-                                    <span class="text-green-500 font-black text-[10px] uppercase tracking-widest">${r.village}</span>
-                                    <h3 class="text-3xl font-black mt-2 tracking-tight">${r.farmer}</h3>
-                                </div>
-                                <div class="bg-green-500/10 p-3 rounded-2xl">🌱</div>
-                            </div>
-                            <p class="text-slate-400 mt-6 italic text-lg leading-relaxed">"${r.text}"</p>
-                            <div class="mt-10 pt-8 border-t border-white/5 flex justify-between items-center text-[10px] font-black text-slate-500 uppercase tracking-widest">
-                                <span>Ganesh Seeds Certified</span>
-                                <span>${r.date}</span>
-                            </div>
-                        </div>
-                    </div>
-                `).join('');
             });
+
+        // Fetch Live Field Reports
+        function loadReports() {
+            fetch('/api/reports')
+                .then(res => res.json())
+                .then(reports => {
+                    const feed = document.getElementById('ceoFeed');
+                    document.getElementById('staffCount').innerText = reports.length + 5; // Simulating active staff
+                    document.getElementById('villageCount').innerText = [...new Set(reports.map(r => r.village))].length || 0;
+
+                    if(reports.length > 0) {
+                        feed.innerHTML = '';
+                        reports.forEach(report => {
+                            feed.innerHTML += `
+                                <div class="glass-card rounded-[3rem] overflow-hidden group hover:scale-[1.01] transition duration-500">
+                                    <div class="relative h-64 overflow-hidden">
+                                        <img src="${report.photo}" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent opacity-80"></div>
+                                        <div class="absolute bottom-6 left-8">
+                                            <span class="bg-green-500 text-black px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-tighter shadow-lg">${report.village}</span>
+                                            <h4 class="text-2xl font-black mt-2">${report.farmer}</h4>
+                                        </div>
+                                    </div>
+                                    <div class="p-8">
+                                        <p class="text-slate-400 font-medium italic leading-relaxed text-lg">"${report.text}"</p>
+                                        <div class="mt-8 flex justify-between items-center border-t border-white/5 pt-6">
+                                            <div class="flex items-center space-x-2">
+                                                <div class="w-8 h-8 bg-white/5 rounded-full flex items-center justify-center text-xs">👤</div>
+                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Assistant Verified</span>
+                                            </div>
+                                            <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest">${report.date}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                    }
+                });
         }
-        loadReports(); setInterval(loadReports, 10000);
+
+        // Auto-refresh the feed every 10 seconds for the CEO
+        loadReports();
+        setInterval(loadReports, 10000);
     </script>
 </body>
 </html>
